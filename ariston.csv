@@ -84,7 +84,8 @@ b,energymgr,error,HP Casted Error,,fe,2004,,,m,error_code,
 r,boiler,boiler_pressure,Boiler circuit pressure,,3c,2000,7547,ign,s,IGN,,,,boiler_pressure,,UCH,10,bar
 # LWT_temp read by other broadcasted message, commenting this line to avoid ebusd error for duplicate ID
 # r,boiler,LWT_temp,heating temperature,,3c,2000,6810,ign,s,IGN:1,,,,,,SIN,10,°C
-r,boiler,EWT_temp,heating return temperature,,3c,2000,6910,ign,s,IGN:1,,,,,,SIN,10,°C
+r,boiler,return_temp,heating return temperature,,3c,2000,6910,ign,s,IGN:1,,,,,,SIN,10,°C
+r,boiler,flow_temp,heating flow temperature,,3c,2000,6810,ign,s,IGN:1,,,,,,SIN,10,°C
 r,boiler,diverter_cycles,Number of diverter valve cycles,,3c,2000,40d2,ign,s,IGN:1,,,,,,UIN
 r,boiler,ignition_cycles,Number of ignition cycles,,3c,2000,42d8,ign,s,IGN:1,,,,,,UIN
 r,boiler,circulation_time,circulation time,,3c,2000,44aF,ign,s,IGN:1,,,,,,UIN,,min
@@ -93,7 +94,7 @@ r,boiler,boiler_circulation_cycles,Number of circulation cycles,,3c,2000,44d2,ig
 r,boiler,boiler_fan_cycles,Number of fan cycles,,3c,2000,4CD2,ign,s,IGN:1,,,,,,UIN
 r,boiler,hours_burner_on_CH,Hours Burner On CH,,3c,2000,4bd1,ign,s,IGN:1,,,,,,UIN,,hours
 r,boiler,hours_burner_on_DHW,Hours Burner On DHW,,3c,2000,4cd1,ign,s,IGN:1,,,,,,UIN,,hours
-r,boiler,flame_active,Flame active,,3c,2000,0e11,ign,s,IGN:1,,,,,s,onoff
+r,boiler,flame_active_status,Flame active,,3c,2000,0e11d140,ign,s,IGN:1,,,,,s,onoff
 r,boiler,flame_power_kw,Boiler Flame Power KW,,3c,2000,6847,,s,IGN:1,,,,,,UIN,10,kW
 r,boiler,diverter_valve,Boiler Diverter Valve,,3c,2000,c012,ign,s,IGN:1,,,,,,BCD,0=dhw;1=heating
 r,boiler,hours_pump_on,Pump Hours On,,3c,2000,42d2,ign,s,IGN:1,,,,,,UIN,,hours
@@ -357,13 +358,13 @@ r,energymgr,boiler_estimated_cost,Boiler Current Calculated Cost,,18,2000,7247,,
 
 #Menu - Hybrid System Statistics
 
-r,energymgr,heatpump_only_op_hours,Heatpump Only Operating Hours,,18,2000,40d1,,s,IGN:1,,,,,,UIN,,h
-r,energymgr,heatpump_and_boiler_operating_hours,Heatpump and Boiler Combined Operating Hours,,18,2000,4ed1,,s,IGN:1,,,,,,UIN,,h
-r,energymgr,heatpump_ingnition_cycles,Heatpump Ignition Cycles,,18,2000,40d8,,s,IGN:1,,,,,,UIN,,n
-r,energymgr,heatpump_defrost_op_hours,Heatpump Defrosting Operating Hours,,18,2000,47d1,,s,IGN:1,,,,,,UIN,,h
-r,energymgr,heatpump_cooling_op_hours,Heatpump Cooling Operating Hours,,18,2000,54d1,,s,IGN:1,,,,,,UIN,,h
-r,energymgr,heatpump_heating_op_hours,Heatpump Heating Operating Hours,,18,2000,55d1,,s,IGN:1,,,,,,UIN,,h
-r,energymgr,heatpump_dhw_buffer_op_hours,Heatpump DHW Buffer Operating Hours,,18,2000,56d1,,s,IGN:1,,,,,,UIN,,h
+#r,energymgr,heatpump_only_op_hours,Heatpump Only Operating Hours,,18,2000,40d1,,s,IGN:1,,,,,,UIN,,h
+#r,energymgr,heatpump_and_boiler_operating_hours,Heatpump and Boiler Combined Operating Hours,,18,2000,4ed1,,s,IGN:1,,,,,,UIN,,h
+#r,energymgr,heatpump_ingnition_cycles,Heatpump Ignition Cycles,,18,2000,40d8,,s,IGN:1,,,,,,UIN,,n
+#r,energymgr,heatpump_defrost_op_hours,Heatpump Defrosting Operating Hours,,18,2000,47d1,,s,IGN:1,,,,,,UIN,,h
+#r,energymgr,heatpump_cooling_op_hours,Heatpump Cooling Operating Hours,,18,2000,54d1,,s,IGN:1,,,,,,UIN,,h
+#r,energymgr,heatpump_heating_op_hours,Heatpump Heating Operating Hours,,18,2000,55d1,,s,IGN:1,,,,,,UIN,,h
+#r,energymgr,heatpump_dhw_buffer_op_hours,Heatpump DHW Buffer Operating Hours,,18,2000,56d1,,s,IGN:1,,,,,,UIN,,h
 
 
 
@@ -373,7 +374,8 @@ r,energymgr,heatpump_dhw_buffer_op_hours,Heatpump DHW Buffer Operating Hours,,18
 #Ext temp can be detected by multiple probes in the system (boiler, HP), it seems the system then compute the "better" one and cast it via 7647 command
 b,energymgr,ext_temp,External Temp,,fe,200f,7647,,,SIN,10,°C
 #Boiler Ext Temp, if present: 0x7fff(32767) is the default value if the probe is missing/broken, HP ext temp probe is in the HP section of the CEV (par 7810)
-b,boiler,ext_temp,External Temp,,fe,2010,7310,,,SIN,10,°C,32767=0
+#Commented below because i don't have the probe installed and value not required
+#b,boiler,ext_temp,External Temp,,fe,2010,7310,,,SIN,10,°C,32767=0
 
 
 
@@ -481,18 +483,18 @@ r,energymgr,hybrid_status,Hybrid Status,,18,2000,c94b,,s,IGN:1,,,,,,UCH,0=Stand-
 r,energymgr,hybrid_LWT_setpoint,Hybrid LWT Setpoint,,18,2000,6047,,s,IGN:1,,,,,,SIN,10,°C
 b,energymgr,hybrid_LWT_setpoint,Hybrid LWT Setpoint,,fe,2010,6047,,,SIN,10,°C
 r,energymgr,dhw_store_temp,DHW Storage Water Temp,,18,2000,7017,,s,IGN:1,,,,,,SIN,10,°C
-r,energymgr,energymgr_hv_inv_1_status,HV IN 1,,18,2000,1d11,,s,IGN:1,,,,,s,onoff
-r,energymgr,energymgr_hv_inv_2_status,HV IN 2,,18,2000,1c11,,s,IGN:1,,,,,s,onoff
-r,energymgr,energymgr_hv_inv_3_status,HV IN 3,,18,2000,1f11,,s,IGN:1,,,,,s,onoff
-r,energymgr,energymgr_aux1_input,AUX 1 Input State,,18,2000,1e11,,s,IGN:1,,,,,s,onoff
+#r,energymgr,energymgr_hv_inv_1_status,HV IN 1,,18,2000,1d11,,s,IGN:1,,,,,s,onoff
+#r,energymgr,energymgr_hv_inv_2_status,HV IN 2,,18,2000,1c11,,s,IGN:1,,,,,s,onoff
+#r,energymgr,energymgr_hv_inv_3_status,HV IN 3,,18,2000,1f11,,s,IGN:1,,,,,s,onoff
+#r,energymgr,energymgr_aux1_input,AUX 1 Input State,,18,2000,1e11,,s,IGN:1,,,,,s,onoff
 #Menu - EM Diagnostics - 2 Output Menu
 r,heatpump,heatpump_main_pump,HP Main Pump,,18,2000,c200,,s,IGN:1,,,,,s,onoff
 r,heatpump,heatpump_ext_pump,HP Ext Pump,,18,2000,c700,,s,IGN:1,,,,,s,onoff
 r,heatpump,heatpump_3way_valve_dhw_heat,HP 3Way valve,,18,2000,0601,,s,IGN:1,,,,,,BCD,0=dhw;1=heat
 r,heatpump,heatpump_3way_valve_heat_cool,HP 3Way valve,,18,2000,0701,,s,IGN:1,,,,,,BCD,0=heat;1=cool
 r,heatpump,heatpump_anode,HP Anode,,18,2000,1903,,s,IGN:1,,,,,s,onoff
-r,energymgr,energymgr_aux1_out,HP Aux1 Output,,18,2000,1803,,s,IGN:1,,,,,s,onoff
-r,energymgr,energymgr_aux2_out,HP Aux2 Output,,18,2000,1A03,,s,IGN:1,,,,,s,onoff
+#r,energymgr,energymgr_aux1_out,HP Aux1 Output,,18,2000,1803,,s,IGN:1,,,,,s,onoff
+#r,energymgr,energymgr_aux2_out,HP Aux2 Output,,18,2000,1A03,,s,IGN:1,,,,,s,onoff
 
 #Menu - PWM
 r,heatpump,pump_max_pwm,HP Pump Max PWM,,1e,2000,d32c,,s,IGN:1,,,,,s,UCH,,pct
@@ -561,7 +563,7 @@ b,energymgr,setpoint_temp,Current Setpoint Temp,13,fe,2010,6996,z1_setpoint_temp
 #r,energymgr,dhw_info_2,DHW Store Info,,18,2000,1c1170170601c200,,s,IGN:1,,,,heatpump_hv_inv_2,s,BCD,0=off;1=on,,,dhw_store_temp,s,SIN,10,°C,,3way_valve_state,s,BCD,0=dhw;1=heating,,,heatpump_main_pump,s,BCD,0=off;1=on
 
 #DHW temp related messages
-b,energymgr,dhw_info_3,DHW Temp Info,,fe,2020,6126,dhw_comfort_temp,,SIN,10,°C,,,,IGN:2,,,,dhw_reduced_temp,,SIN,10,°C
+b,energymgr,dhw_info_3,DHW Temp Info,,fe,2020,046126,dhw_comfort_temp,,SIN,10,°C,,,,IGN:2,,,,dhw_reduced_temp,,SIN,10,°C
 
 ##D140 confirmed as a counter of the device config changes, like a version counter (every device has it's own)
 r,energymgr,config_version_counter,System Configuration Change Counter,,84,2000,d140,ign,s,IGN:1,,,,,,UCH,,,,,,,,,,,,,,,,,,,,,,,,
@@ -602,5 +604,3 @@ b,ignored,ign5,QQfe2050XXXXX,,fe,2050,,ign,,IGN:11
 # 13fe20100c059100000691000007910000 
 # 0591, 0691, 0791 are Z5,6,7 heat request, discarded as not relevant to my use case
 b,ignored,ign6,QQfe2010XX0591,,fe,2010,0591,ign,,IGN:10
-
-
