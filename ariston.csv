@@ -100,9 +100,9 @@ r,boiler,diverter_valve,Boiler Diverter Valve,,3c,2000,c012,ign,s,IGN:1,,,,,,BCD
 r,boiler,hours_pump_on,Pump Hours On,,3c,2000,42d2,ign,s,IGN:1,,,,,,UIN,,hours
 r,boiler,flame_lift_offs,Flame Lift Offs,,3c,2000,46d1,ign,s,IGN:1,,,,,,UIN,
 #r,boiler,heat_request_avg_duration,Heat Request Average Duration,,3c,2000,42d2,ign,s,IGN:1,,,,,,UIN,,hours
-#r,boiler,pump_current_modulation,Pump Current Modulation,,3c,2000,c300,ign,s,IGN:1,,,,,,UIN,,pct
-r,boiler,pump_current_modulation,Pump Current Modulation,,3c,2000,c300,,s,UIN
-r,boiler,boiler_current_modulation,Boiler Current Gas Modulation,,3c,2000,c404,ign,s,IGN:1,,,,,,UCH
+#r,boiler,pump_current_modulation,Pump Current Modulation,,3c,2000,c300,ign,s,IGN:1,,,,,s,UCH
+#r,boiler,pump_current_modulation,Pump Current Modulation,,3c,2000,c300,,s,UIN,,pct,,,,
+#r,boiler,boiler_current_modulation,Boiler Current Gas Modulation,,3c,2000,c404,ign,s,IGN:1,,,,,,UCH
 
 
 
@@ -184,8 +184,10 @@ w,energymgr,hybrid_logic,Hybrid Logic,,fe,2020,ce28,,s,BCD
 #Z1 Setpoint
 r,energymgr,z1_day_temp,Z1 Day Temp,,18,2000,6271,,s,IGN:1,,,,,,SIN,10,°C
 b,energymgr,z1_day_temp,Z1 Day Temp,,fe,200f,6271,,,SIN,10,°C
-b,energymgr,z1_status_type,Z1 Status Type,,fe,2020,c679,,,BCD,0=off;2=manual;3=scheduled,,
 w,energymgr,z1_day_temp,Z1 Day Temp,,fe,2020,6271,,s,SIN,10,°C
+r,energymgr,z1_schedule_mode,Z1 Status Type,,fe,2020,c679,,s,IGN:1,,,,,,BCD,0=off;2=manual;3=scheduled,,
+b,energymgr,z1_schedule_mode,Z1 Status Type,,fe,2020,c679,,,BCD,0=off;2=manual;3=scheduled,,
+w,energymgr,z1_schedule_mode,Z1 Status Type,,fe,2020,c679,,s,BCD,0=off;2=manual;3=scheduled,,
 r,energymgr,z1_night_temp,Z1 Night Temp,,18,2000,6371,,s,IGN:1,,,,,,SIN,10,°C
 w,energymgr,z1_night_temp,Z1 Night Temp,,fe,2020,6371,,s,SIN,10,°C
 b,energymgr,z1_night_temp,Z1 Night Temp,,fe,200f,6371,,,SIN,10,°C
@@ -219,23 +221,23 @@ w,energymgr,z1_heat_request_mode,Z1 Heating Request Mode,,fe,2020,ce79,,s,BCD
 
 #Z1 Diagnostic
 r,energymgr,z1_room_temp,Z1 Room Temp,,18,2000,7118,,s,IGN:1,,,,,,SIN,10,°C
-b,energymgr,z1_room_temp,Z1 Room Temp,,fe,2020,7118,,,SIN,10,°C,,,,,,,,,,,,,,,,,,,,,,
+b,energymgr,z1_room_temp,Z1 Room Temp,,fe,200f,7118,,,SIN,10,°C,,,,,,,,,,,,,,,,,,,,,,
 r,energymgr,z1_setpoint_temp,Z1 Current Setpoint,,18,2000,6996,,s,IGN:1,,,,,,SIN,10,°C
 b,energymgr,z1_setpoint_temp,Z1 Current Setpoint,,fe,200f,6996,,,SIN,10,°C,,,,,,,,,,,,,,,,,,,,,,
 r,energymgr,z1_heat_request,Z1 Heating Request,,18,2000,0191,,s,IGN:1,,,,,s,onoff
 #Z1 Cooling Settings
-r,energymgr,z1_cool_setpoint_temp_set,Z1 Cooling Forced Setpoint Temp,,18,2000,7071,,s,IGN:1,,,,,,SIN,10,°C
-b,energymgr,z1_cool_setpoint_temp_set,Z1 Cooling Forced Setpoint Temp,,fe,200f,7071,z1_cool_setpoint_temp,,SIN,10,°C
-w,energymgr,z1_cool_setpoint_temp_set,Z1 Cooling Forced Setpoint Temp,,fe,2020,7071,,s,SIN,10,°C
-r,energymgr,z1_cool_temp_range,Z1 cooling Temp Range,,18,2000,0681,,s,IGN:1,,,,,,BCD,0=fancoil;1=underfloorheating
-w,energymgr,z1_cool_temp_range,Z1 cooling Temp Range,,fe,2020,0681,,s,BCD
-r,energymgr,z1_cool_therm_type_selection,Z1 Cooling Thermoreg Type Selection,,18,2000,CB79,,s,IGN:1,,,,,,BCD,0=on-off;1=fixed_temp;2=toom_temp
-w,energymgr,z1_cool_therm_type_selection,Z1 Cooling Thermoreg Type Selection,,fe,2020,CB79,,s,BCD
-r,energymgr,z1_cool_slope,Z1 Cool Thermoreg Slope,,18,2000,7671,,s,IGN:1,,,,,,UIN,100
-r,energymgr,z1_cool_offset,Z1 Cool Thermoreg Offset,,18,2000,7571,,s,IGN:1,,,,,,SCH,10
-b,energymgr,z1_cool_offset,Z1 Cool Thermoreg Offset,,fe,200e,7571,,,SIN,10,°C
-r,energymgr,z1_cool_water_max_temp,Z1 Cooling Max Water Temp,,18,2000,7171,,s,IGN:1,,,,,,SIN,10,°C
-r,energymgr,z1_cool_water_min_temp,Z1 Cooling Min Water Temp,,18,2000,7371,,s,IGN:1,,,,,,SIN,10,°C
+#r,energymgr,z1_cool_setpoint_temp_set,Z1 Cooling Forced Setpoint Temp,,18,2000,7071,,s,IGN:1,,,,,,SIN,10,°C
+#b,energymgr,z1_cool_setpoint_temp_set,Z1 Cooling Forced Setpoint Temp,,fe,200f,7071,z1_cool_setpoint_temp,,SIN,10,°C
+#w,energymgr,z1_cool_setpoint_temp_set,Z1 Cooling Forced Setpoint Temp,,fe,2020,7071,,s,SIN,10,°C
+#r,energymgr,z1_cool_temp_range,Z1 cooling Temp Range,,18,2000,0681,,s,IGN:1,,,,,,BCD,0=fancoil;1=underfloorheating
+#w,energymgr,z1_cool_temp_range,Z1 cooling Temp Range,,fe,2020,0681,,s,BCD
+#r,energymgr,z1_cool_therm_type_selection,Z1 Cooling Thermoreg Type Selection,,18,2000,CB79,,s,IGN:1,,,,,,BCD,0=on-off;1=fixed_temp;2=toom_temp
+#w,energymgr,z1_cool_therm_type_selection,Z1 Cooling Thermoreg Type Selection,,fe,2020,CB79,,s,BCD
+#r,energymgr,z1_cool_slope,Z1 Cool Thermoreg Slope,,18,2000,7671,,s,IGN:1,,,,,,UIN,100
+#r,energymgr,z1_cool_offset,Z1 Cool Thermoreg Offset,,18,2000,7571,,s,IGN:1,,,,,,SCH,10
+#b,energymgr,z1_cool_offset,Z1 Cool Thermoreg Offset,,fe,200e,7571,,,SIN,10,°C
+#r,energymgr,z1_cool_water_max_temp,Z1 Cooling Max Water Temp,,18,2000,7171,,s,IGN:1,,,,,,SIN,10,°C
+#r,energymgr,z1_cool_water_min_temp,Z1 Cooling Min Water Temp,,18,2000,7371,,s,IGN:1,,,,,,SIN,10,°C
 
 #Z2 Settings (if present)
 #Z2 Setpoint
